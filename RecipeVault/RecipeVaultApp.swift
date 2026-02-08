@@ -1,32 +1,44 @@
-//
-//  RecipeVaultApp.swift
-//  RecipeVault
-//
-//  Created by Mark Hougaard on 07/02/2026.
-//
-
 import SwiftUI
 import SwiftData
 
 @main
 struct RecipeVaultApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+    let modelContainer: ModelContainer
 
+    init() {
+        let schema = Schema([
+            Recipe.self,
+            Book.self,
+            Ingredient.self,
+        ])
+        let configuration = ModelConfiguration(
+            schema: schema
+        )
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            modelContainer = try ModelContainer(for: schema, configurations: [configuration])
         } catch {
-            fatalError("Could not create ModelContainer: \(error)")
+            fatalError("Failed to create ModelContainer: \(error)")
         }
-    }()
+    }
 
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .task {
+                    await loadSeedDataIfNeeded()
+                }
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(modelContainer)
+    }
+
+    /// Populates the database with sample data on first launch.
+    @MainActor
+    private func loadSeedDataIfNeeded() {
+        let context = modelContainer.mainContext
+        let descriptor = FetchDescriptor<Recipe>()
+        let count = (try? context.fetchCount(descriptor)) ?? 0
+
+        guard count == 0 else { return }
+        SeedData.populate(context: context)
     }
 }

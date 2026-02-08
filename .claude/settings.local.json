@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xcodebuild:*)",
+      "Bash(xcrun simctl boot:*)",
+      "Bash(xcrun simctl uninstall:*)",
+      "Bash(echo:*)",
+      "Bash(xcrun simctl shutdown:*)",
+      "Bash(xcrun simctl:*)",
+      "Bash(defaults read:*)",
+      "Bash(ls:*)",
+      "Bash(open:*)"
+    ]
+  }
+}
