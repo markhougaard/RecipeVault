@@ -25,7 +25,7 @@ struct ContentView: View {
                 WhatCanIMakeComingSoonView()
             }
             Tab("Add Recipe", systemImage: "plus") {
-                AddRecipeComingSoonView()
+                AddRecipeNavigationView()
             }
             Tab("Books", systemImage: "book") {
                 BookListView()
@@ -50,7 +50,7 @@ struct ContentView: View {
             case .whatCanIMake:
                 WhatCanIMakeComingSoonView()
             case .addRecipe:
-                AddRecipeComingSoonView()
+                AddRecipeNavigationView()
             case .books:
                 BookListView()
             case nil:
